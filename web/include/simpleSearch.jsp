@@ -14,7 +14,7 @@
 		<input type="text" name="keyword" placeholder="眼镜 手表" value="${param.keyword}">
 		<button type="submit" class="searchButton">搜索</button>
 		<div class="searchBelow">
-			<c:foreach items="${cs}" var="c" varStatus="st">
+			<c:forEach items="${cs}" var="c" varStatus="st">
 				<c:if test="study.count>=3&&st.count<=8">
 					<span>
 						<a href="foreservlet?cid=${c.id}">${c.name}</a>
@@ -23,7 +23,7 @@
 						</c:if>
 					</span>
 				</c:if>
-			</c:foreach>
+			</c:forEach>
 		</div>
 	</div>
 	</form>

@@ -10,11 +10,11 @@
 		<div class="rightMenu">
 			<span><a href=""><img src=""></a></span>
 			<span><a href=""><img src=""></a></span>
-			<c:foreach items="${cs}" var="c" varStatue="st">
+			<c:forEach items="${cs}" var="c" varStatue="st">
 				<c:if test="st.count<=4">
 					<span><a href="forecategory?${c.id}">${c.name}</a></span>
 				</c:if>
-			</c:foreach>
+			</c:forEach>
 		</div>
 
 	</div>

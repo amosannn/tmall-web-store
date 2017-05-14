@@ -2,10 +2,10 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 
 <div class="categoryMenu">
-	<c:foreach items="${cs}" var="c">
+	<c:forEach items="${cs}" var="c">
 		<div cid="${c.id}" class="eachCategory">	
 			<span class="glyphicon glyphicon-link"></span>
 			<a href="forecategory?${c.id}">${c.name}</a>
 		</div>
-	</c:foreach>
+	</c:forEach>
 </div>
