@@ -32,7 +32,11 @@
 						</div>
 					</c:if>
 				</c:forEach>
+				<div style="clear:both"></div>
 			</div>
 		</c:if>
 	</c:forEach>
+
+	<img id="endpng" class="endpng" src="img/site/end.png">
+	
 </div>
