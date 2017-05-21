@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="http://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
-<link href="http://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-<script src="http://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
-</head>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" isELIgnored="false"%>
 
 <div>
-	<a href="${contextPath}"><img src="img/site/simpleLogo.png" class="simpleLogo"></a>
+	<a href="${contextPath}"><img id="simpleLogo" src="img/site/simpleLogo.png" class="simpleLogo"></a>
 
 	<form action="foresearch" method="post">
 	<div class="simpleSearchDiv pull-right">
@@ -15,10 +10,10 @@
 		<button type="submit" class="searchButton">搜索</button>
 		<div class="searchBelow">
 			<c:forEach items="${cs}" var="c" varStatus="st">
-				<c:if test="study.count>=3&&st.count<=8">
+				<c:if test="${st.count>=5&&st.count<=7}">
 					<span>
-						<a href="foreservlet?cid=${c.id}">${c.name}</a>
-						<c:if test="st.count!=8">
+						<a href="forecategory?cid=${c.id}">${c.name}</a>
+						<c:if test="${st.count!=7}">
 							<span>|</span>
 						</c:if>
 					</span>
