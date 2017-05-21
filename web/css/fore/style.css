@@ -497,12 +497,20 @@ button.redButton {
 	font-weight: bold;
 }
 
+div.login-links {
+	margin-top: 20px;
+	float: right; 
+}
+
+div.login-links a{
+	margin-right: 10px;
+}
+
 div.categorySortBar {
 	background-color: #FAF9F9;
 	margin: 40px 20px 20px 20px;
 	padding: 4px;
 }
-
 
 table.categorySortBarTable td {
 	border: 1px solid #CCCCCC;
@@ -745,35 +753,15 @@ div.infoInimgAndInfo div.productSubTitle {
 	margin: 0px 10px;
 }
 
-div.infoInimgAndInfo div.juhuasuan {
-	/* 	height:40px; */
-	background-color: #2DA77A;
-	color: white;
-	text-align: center;
-	line-height: 40px;
-	margin-top: 10px;
-}
-
-div.infoInimgAndInfo span.juhuasuanBig {
-	font-size: 18px;
-	font-weight: bold;
-	font-family: ����;
-}
-
-div.infoInimgAndInfo span.juhuasuanTime {
-	color: #FFC057;
-	font-weight: bold;
-}
-
-div.infoInimgAndInfo div.gouwujuanDiv {
+div.infoInimgAndInfo div.gouwuquanDiv {
 	margin-top: 5px;
 }
 
-div.infoInimgAndInfo div.originalDiv {
+div.infoInimgAndInfo div.originalPriceDiv {
 	margin-top: 5px;
 }
 
-div.infoInimgAndInfo div.promotionDiv {
+div.infoInimgAndInfo div.promotionPriceDiv {
 	margin-top: 0px;
 }
 
@@ -934,18 +922,18 @@ div.productReviewTopPart {
 	border: 1px solid #DFDFDF;
 }
 
-div.productParamterPart {
+div.productParameterPart {
 	border: 1px solid #DFDFDF;
 	padding: 40px;
 }
 
-div.productParamter {
+div.productParameter {
 	color: #999999;
 	font-weight: bold;
 	margin-bottom: 20px;
 }
 
-div.productParamterList span {
+div.productParameterList span {
 	display: block;
 	width: 220px;
 	float: left;
