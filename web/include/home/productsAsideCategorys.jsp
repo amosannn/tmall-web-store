@@ -2,17 +2,18 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 
 <script>
-	$(function(){
-		$("div.productsAsideCategorys div.row a").each(function(){
-			var v = Math.round(Math.radom()*6);
-			if(1 == v)
-				$(this).css("color","#87CEFA");
-		});
-	});	
-</script>
+$(function(){
+	$("div.productsAsideCategorys div.row a").each(function(){
+		var v = Math.round(Math.random() *6);
+		if(v == 1)
+			$(this).css("color","#87CEFA");
+	});
+});
 
+</script>
 <c:forEach items="${cs}" var="c">
-	<div class="productsAsideCategorys" cid="${c.id}">
+	<div cid="${c.id}" class="productsAsideCategorys">
+	 
 		<c:forEach items="${c.productsByRow}" var="ps">
 			<div class="row show1">
 				<c:forEach items="${ps}" var="p">
@@ -27,7 +28,8 @@
 					</c:if>
 				</c:forEach>
 				<div class="seperator"></div>
-			</div>
+			</div>		
 		</c:forEach>
-	</div>
+	</div>			
 </c:forEach>
+	

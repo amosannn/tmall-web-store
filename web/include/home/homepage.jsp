@@ -3,7 +3,7 @@
 
 <title>假的天猫</title>
 
-<div class="homePageDiv">
-	<%@include file="categoryAndCarousel.jsp"%>
-	<%@include file="homePageCategoryProducts.jsp"%>
+<div class="homepageDiv">
+	<%@include file="categoryAndcarousel.jsp"%>
+	<%@include file="homepageCategoryProducts.jsp"%>
 </div>
