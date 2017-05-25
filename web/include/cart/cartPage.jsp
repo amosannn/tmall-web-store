@@ -2,9 +2,136 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 
 <script>
+var deleteOrderItem = false;
+var deleteOrderItemid = 0;
+$(function(){
+	$("a.deleteOrderItem").click(function(){
+		deleteOrderItem = false;
+		var oiid = $(this).attr("oiid");
+		deleteOrderItemid = oiid;
+		$("#deleteConfirmModal").modal('show');
+	});
+	$("button.deleteConfirmButton").click(function(){
+		deleteOrderItem = true;
+		$("#deleteConfirmModal").modal('hide');
+	});
 
+	$('#deleteConfirmModal').on('hidden.bs.modal', function () {
+		if(deleteOrderItem){
+			var page="foredeleteOrderItem";
+			$.post(
+				    page,
+				    {"oiid":deleteOrderItemid},
+				    function(result){
+						if("success"==result){
+							$("tr.cartProductItemTR[oiid="+deleteOrderItemid+"]").hide();
+						}
+						else{
+							location.href="login.jsp";
+						}
+				    }
+				);
+			
+		}
+	})
 
-function synccreateOrderButton(){
+	$("img.cartProductItemIfSelected").click(function(){
+		var selectit = $(this).attr("selectit");
+		if("selectit"==selectit){
+			$(this).attr("src","img/site/cartNotSelected.png");
+			$(this).attr("selectit","false");
+			$(this).parents("tr.cartProductItemTR").css("background-color","#fff");
+		}
+		else{
+			$(this).attr("src","img/site/cartSelected.png");
+			$(this).attr("selectit","selectit")
+			$(this).parents("tr.cartProductItemTR").css("background-color","#FFF8E1");
+		}
+		syncSelect();
+		syncCreateOrderButton();
+		calcCartSumPriceAndNumber();
+	});
+
+	$("img.selectAllItem").click(function(){
+		var selectit = $(this).attr("selectit")
+		if("selectit"==selectit){
+			$("img.selectAllItem").attr("src","img/site/cartNotSelected.png");
+			$("img.selectAllItem").attr("selectit","false")
+			$(".cartProductItemIfSelected").each(function(){
+				$(this).attr("src","img/site/cartNotSelected.png");
+				$(this).attr("selectit","false");
+				$(this).parents("tr.cartProductItemTR").css("background-color","#fff");
+			});			
+		}
+		else{
+			$("img.selectAllItem").attr("src","img/site/cartSelected.png");
+			$("img.selectAllItem").attr("selectit","selectit")
+			$(".cartProductItemIfSelected").each(function(){
+				$(this).attr("src","img/site/cartSelected.png");
+				$(this).attr("selectit","selectit");
+				$(this).parents("tr.cartProductItemTR").css("background-color","#FFF8E1");
+			});				
+		}
+		syncCreateOrderButton();
+		calcCartSumPriceAndNumber();
+	});
+
+	$(".orderItemNumberSetting").keyup(function(){
+		var pid=$(this).attr("pid");
+		var stock= $("span.orderItemStock[pid="+pid+"]").text();
+		var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
+		
+		var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
+		num = parseInt(num);
+		if(isNaN(num))
+			num= 1;
+		if(num<=0)
+			num = 1;
+		if(num>stock)
+			num = stock;
+		
+		syncPrice(pid,num,price);
+	});
+
+	$(".numberPlus").click(function(){
+		
+		var pid=$(this).attr("pid");
+		var stock= $("span.orderItemStock[pid="+pid+"]").text();
+		var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
+		var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
+
+		num++;
+		if(num>stock)
+			num = stock;
+		syncPrice(pid,num,price);
+	});
+
+	$(".numberMinus").click(function(){
+		var pid=$(this).attr("pid");
+		var stock= $("span.orderItemStock[pid="+pid+"]").text();
+		var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
+		
+		var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
+		--num;
+		if(num<=0)
+			num=1;
+		syncPrice(pid,num,price);
+	});	
+
+	$("button.createOrderButton").click(function(){
+		var params = "";
+		$(".cartProductItemIfSelected").each(function(){
+			if("selectit" == $(this).attr("selectit")){
+				var oiid = $(this).attr("oiid");
+				params += "&oiid=" + oiid;
+			}
+		});
+		params = params.substring(1);
+		location.href="forebuy?"+params;
+	});
+});
+
+function syncCreateOrderButton(){
 	var selectAny=false;
 	$(".cartProductItemIfSelected").each(function(){
 		if("selectit"==$(this).attr("selectit"))
@@ -15,7 +142,7 @@ function synccreateOrderButton(){
 		$("button.createOrderButton").removeAttr("disabled");
 	}
 	else{
-		$("button.createOrderButton").css("background-color","#AAAAAA")
+		$("button.createOrderButton").css("background-color","#AAAAAA");
 		$("button.createOrderButton").attr("disabled","disabled");
 	}
 }
@@ -31,7 +158,7 @@ function syncSelect(){
 		$("img.selectAllItem").attr("src","img/site/cartSelected.png");
 	}
 	else{
-		$("img.selectAllItem").attr("src"."img/site/cartNotSelected.png");
+		$("img.selectAllItem").attr("src","img/site/cartNotSelected.png");
 	}
 }
 
@@ -54,6 +181,23 @@ function calcCartSumPriceAndNumber(){
 	$("span.cartSumNumber").html(totalNumber);
 }
 
+function syncPrice(pid,num,price){
+	$(".orderItemNumberSetting[pid="+pid+"]").val(num);
+	var cartProductItemSmallSumPrice = formatMoney(num*price);
+	$(".cartProductItemSmallSumPrice[pid="+pid+"]").html("￥"+cartProductItemSmallSumPrice);
+	calcCartSumPriceAndNumber();
+
+	var page = "forechangeOrderItem";
+	$.post(
+		page,
+		{"pid":pid,"number":num},
+		function(result){
+			if("success"!=result){
+				location.href="login.jsp";
+			}
+		}
+	);
+}
 </script>
 
 <title>购物车</title>
@@ -91,7 +235,7 @@ function calcCartSumPriceAndNumber(){
 							<div class="cartProductLinkOutDiv">
 								<a href="foreproduct?pid=${oi.product.id}" class="cartProductLink">${oi.product.name}</a>
 								<div class="cartProductLinkInnerDiv">
-									<img src="img/site/creditcart.png" title="支持信用卡支付">
+									<img src="img/site/creditcard.png" title="支持信用卡支付">
 									<img src="img/site/7day.png" title="消费者保障服务，卖家承诺7天退换">
 									<img src="img/site/promise.png" title="消费者保障服务，卖家承诺如实描述">
 								</div>
@@ -114,7 +258,7 @@ function calcCartSumPriceAndNumber(){
 							<span class="cartProductItemSmallSumPrice" oiid="${oi.id}" pid="${oi.product.id}">￥<fmt:formatNumber type="number" value="${oi.product.promotePrice*oi.number}" minFractionDigits="2"/></span>
 						</td>
 						<td>
-							<a href="#nowhere" class="deleteOrderItem" oiid="${oi.id}"></a>
+							<a href="#nowhere" class="deleteOrderItem" oiid="${oi.id}">删除</a>
 						</td>
 					</tr>
 				</c:forEach>
