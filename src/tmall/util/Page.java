@@ -35,15 +35,15 @@ public class Page {
 	}
 	
 	/**
-	 * ��ȡ��ҳ��
+	 * 根据每页显示的数量count以及总共有多少条数据total，计算出总共有多少页
 	 * @return
 	 */
 	public int getTotalPage(){
 		int totalPage;
-		//����������50�����ܹ���5�����ģ���ô����10ҳ
+		// 假设总数是50，是能够被5整除的，那么就有10页
 		if(0 == total % count)
 			totalPage = total/count;
-		//����������51���޷���5��������ô����11ҳ
+		// 假设总数是51，不能够被5整除的，那么就有11页
 		else
 			totalPage = total/count + 1;
 		
@@ -53,15 +53,15 @@ public class Page {
 	}
 	
 	/**
-	 * ��ȡ���һҳ���������ݱ��start
+	 * 计算出最后一页的start
 	 * @return
 	 */
 	public int getLast(){
 		int last;
-		//��������Ϊ50���ܹ���5��������ô���һҳ��ʼ����45
+		// 假设总数是50，是能够被5整除的，那么最后一页的开始就是45
 		if(0 == total % count)
 			last = total-count;
-		//��������Ϊ51���޷���5��������ô���һҳ��ʼ����50
+		// 假设总数是51，不能够被5整除的，那么最后一页的开始就是50
 		else 
 			last = total - total % count;
 		
