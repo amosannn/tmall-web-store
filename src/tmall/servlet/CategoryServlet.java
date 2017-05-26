@@ -42,7 +42,7 @@ public class CategoryServlet extends BaseBackServlet{
 						foStream.write(b, 0, length);
 					}
 					foStream.flush();
-					//通过如下代码，把文件保存为jpg格式
+					//杞崲鎴恓pg
 					BufferedImage img = ImageUtil.change2jpg(file);
 					ImageIO.write(img, "jpg", file);
 				} catch (Exception e) {
@@ -93,7 +93,7 @@ public class CategoryServlet extends BaseBackServlet{
 						fos.write(b, 0, length);
 					}
 					fos.flush();
-					// 通过如下代码，把文件保存为jpg
+					//灏嗗浘鐗囪浆鎹㈡垚jpg
 					BufferedImage img = ImageUtil.change2jpg(file);
 					ImageIO.write(img, "jpg", file);
 				} catch (Exception e) {
