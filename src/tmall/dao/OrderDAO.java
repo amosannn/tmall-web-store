@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -278,5 +279,18 @@ public class OrderDAO {
     	}
     	return beans;
     }
+    
+    /**
+     * 获取预计收货日期
+     * @return
+     */
+    public String getExpectedReceivingDate(Order o){
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(o.getPayDate());
+    	int month=cal.get(Calendar.MONTH);
+    	int day=cal.get(Calendar.DATE)+2;
+ 
+    	return month+"月"+day+"日";
+	}
  
 }

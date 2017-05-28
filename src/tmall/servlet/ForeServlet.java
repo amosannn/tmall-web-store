@@ -404,8 +404,13 @@ public class ForeServlet extends BaseForeServlet{
 		Order order = orderDAO.get(oid);
 		order.setStatus(orderDAO.waitDelivery);
 		order.setPayDate(new Date());
+		
+		String expectedReceivingDate = orderDAO.getExpectedReceivingDate(order);//获取预计收货日期
+		request.setAttribute("erd", expectedReceivingDate);
+		
 		orderDAO.update(order);
 		request.setAttribute("o", order);
+		
 		
 		return "payed.jsp";
 	}
