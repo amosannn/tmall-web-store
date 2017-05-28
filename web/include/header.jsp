@@ -30,6 +30,12 @@ function formatMoney(num){
 	num.substring(num.length-(4*i+3));  
 	return (((sign)?'':'-') + num + '.' + cents);  
 }
+
+$(function(){
+	$("a.wangwanglink").click(function(){
+		alert("假装打开了旺旺");
+	});
+});
 </script>
 
 
