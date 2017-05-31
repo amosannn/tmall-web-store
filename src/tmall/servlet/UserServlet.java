@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tmall.bean.User;
+import tmall.dao.UserDAO;
 import tmall.util.Page;
 
 public class UserServlet extends BaseBackServlet {
@@ -15,7 +16,11 @@ public class UserServlet extends BaseBackServlet {
 	}
 	
 	public String delete(HttpServletRequest request, HttpServletResponse response, Page page){
-		return null;
+		int uid = Integer.parseInt(request.getParameter("uid"));
+		User bean = userDAO.get(uid);
+		bean.setStatus(UserDAO.delete);
+		userDAO.update(bean);
+		return "%success";
 	}
 	
 	public String edit(HttpServletRequest request, HttpServletResponse response, Page page){
@@ -28,10 +33,9 @@ public class UserServlet extends BaseBackServlet {
 	
 	public String list(HttpServletRequest request, HttpServletResponse response, Page page){
 		
-		List<User> us = userDAO.list(page.getStart(), page.getCount());
+		List<User> us = userDAO.list(userDAO.delete, page.getStart(), page.getCount());
 		int total = userDAO.getTotal();
 		page.setTotal(total);
-		
 		request.setAttribute("us", us);
 		request.setAttribute("page", page);
 		

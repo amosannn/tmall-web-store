@@ -14,7 +14,9 @@ import tmall.bean.User;
 import tmall.util.DBUtil;
  
 public class UserDAO {
- 
+	public static final String active = "active";
+	public static final String delete =  "delete";
+	
     public int getTotal() {
         int total = 0;
         try (Connection c = DBUtil.getConnection(); Statement s = c.createStatement();) {
@@ -34,7 +36,7 @@ public class UserDAO {
  
     public void add(User bean) {
  
-        String sql = "insert into user values(null ,? ,?)";
+        String sql = "insert into user values(null, ?, ?, default)";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
  
             ps.setString(1, bean.getName());
@@ -55,12 +57,13 @@ public class UserDAO {
  
     public void update(User bean) {
  
-        String sql = "update user set name= ? , password = ? where id = ? ";
+        String sql = "update user set name= ?, password = ?, status = ? where id = ? ";
         try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
  
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getPassword());
-            ps.setInt(3, bean.getId());
+            ps.setString(3, bean.getStatus());
+            ps.setInt(4, bean.getId());
  
             ps.execute();
  
@@ -110,10 +113,20 @@ public class UserDAO {
         return bean;
     }
  
+    /**
+     * 用户普通集合（包含所有状态，active，delete等）
+     * @return
+     */
     public List<User> list() {
         return list(0, Short.MAX_VALUE);
     }
  
+    /**
+     * 用户普通分页集合（包含所有状态，active，delete等）
+     * @param start
+     * @param count
+     * @return
+     */
     public List<User> list(int start, int count) {
         List<User> beans = new ArrayList<User>();
  
@@ -145,6 +158,55 @@ public class UserDAO {
         return beans;
     }
 
+    /**
+     * 用户集合（除了标记已删除的用户）
+     * @param excludedStatus
+     * @return
+     */
+    public List<User> list(String excludedStatus) {
+        return list(excludedStatus, 0, Short.MAX_VALUE);
+    }
+    
+    /**
+     * 用户分页集合（除了标记已删除的用户）
+     * @param excludedStatus
+     * @param start
+     * @param count
+     * @return
+     */
+    public List<User> list(String excludedStatus, int start, int count){
+    	List<User> beans = new ArrayList<User>();
+    	String sql = "select * from user where status != ? order by id desc limit ?,?";
+    	
+    	try(Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)){
+    		ps.setString(1, excludedStatus);
+    		ps.setInt(2, start);
+    		ps.setInt(3, count);
+    		
+    		ResultSet rs = ps.executeQuery();
+    		
+    		while(rs.next()){
+    			User bean = new User();
+                int id = rs.getInt(1);
+
+                String name = rs.getString("name");
+                bean.setName(name);
+                String password = rs.getString("password");
+                bean.setPassword(password);
+                String status = rs.getString("status");
+                bean.setStatus(status);
+                
+                bean.setId(id);
+                beans.add(bean);
+    		}
+    		
+    	}catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return beans;
+    }
+    
 	public boolean isExist(String name) {
 		User user = get(name);
 		return user!=null;
