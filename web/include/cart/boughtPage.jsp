@@ -61,6 +61,28 @@ $(function(){
 			});
 		
 	});
+
+	$(".refund").click(function(){
+		console.log("refund button clicked");
+		var refundOrderId = $(this).attr("oid");
+		var link = "forerefund?oid="+refundOrderId;
+		console.log("refundOrderId:"+refundOrderId+"  link:"+link);
+		page = link;
+		$.post(
+			   page,
+			   {"oid":refundOrderId},
+			   function(result){
+				   	if("success"==result){
+						alert("已提交退款请求，等待商家退款");
+					}
+						else{
+						console.log("fail")
+					}
+			   }
+			);
+		$(this).hide();
+		location.href="forebought";
+	});
 });
 
 </script>
@@ -157,6 +179,22 @@ $(function(){
 									<a href="forereview?oid=${o.id}">
 										<button  class="orderListItemReview">评价</button>
 									</a>
+
+								</c:if>
+
+								<c:if test="${o.status!='waitPay'&&o.status!='waitDelivery'&&o.status!='delete'&&o.status!='waitRefund'&&o.status!='refunded' }">
+									
+										<button oid="${o.id}" class="orderListItemReview refund">退款</button>
+									
+
+								</c:if>
+
+								<c:if test="${o.status=='waitRefund' }">
+									待退款
+								</c:if>
+
+								<c:if test="${o.status=='refunded' }">
+									已退款
 								</c:if>
 							</td>
 						</c:if>

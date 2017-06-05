@@ -24,6 +24,8 @@ public class OrderDAO {
 	public static final String waitConfirm = "waitConfirm";
 	public static final String waitReview = "waitReview";
 	public static final String finish = "finish";
+	public static final String refunded = "refunded";
+	public static final String waitRefund = "waitRefund";
 	public static final String delete = "delete";
 	
     public int getTotal() {

@@ -48,4 +48,13 @@ public class OrderServlet extends BaseBackServlet{
 		return "@admin_order_list";
 	}
 	
+	public String refund(HttpServletRequest request, HttpServletResponse response, Page page){
+		int oid = Integer.parseInt(request.getParameter("id"));
+		Order o = orderDAO.get(oid);
+		o.setStatus(orderDAO.refunded);
+		orderDAO.update(o);
+		
+		return "@admin_order_list";
+	}
+	
 }

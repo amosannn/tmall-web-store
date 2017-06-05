@@ -36,7 +36,7 @@ $(function(){
 					<th>支付时间</th>
 					<th>发货时间</th>
 					<th>确认收货时间</th>
-					<th width="120px">操作</th>
+					<th width="150px">操作</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -59,6 +59,12 @@ $(function(){
 							<c:if test="${o.status=='waitDelivery'}">
 								<a href="admin_order_delivery?id=${o.id}">
 									<button class="btn btn-primary btn-xs">发货</button>
+								</a>
+							</c:if>
+
+							<c:if test="${o.status=='waitRefund'}">
+								<a href="admin_order_refund?id=${o.id}">
+									<button class="btn btn-primary btn-xs">确认退款</button>
 								</a>
 							</c:if>
 						</td>

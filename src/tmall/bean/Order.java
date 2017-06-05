@@ -39,10 +39,16 @@ public class Order {
 				desc="待收货";
 				break;
 			case OrderDAO.waitReview:
-				desc="等评价";
+				desc="待评价";
 				break;
 			case OrderDAO.finish:
 				desc="完成";
+				break;
+			case OrderDAO.waitRefund:
+				desc="待退款";
+				break;
+			case  OrderDAO.refunded:
+				desc="已退款";
 				break;
 			case OrderDAO.delete:
 				desc="刪除";

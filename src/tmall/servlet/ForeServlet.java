@@ -524,4 +524,13 @@ public class ForeServlet extends BaseForeServlet{
 		
 		return "@forereview?oid="+oid+"&showonly=true";
 	}
+	
+	public String refund(HttpServletRequest request, HttpServletResponse response, Page page){
+		int oid = Integer.parseInt(request.getParameter("oid"));
+		Order o = orderDAO.get(oid);
+		o.setStatus(orderDAO.waitRefund);
+		orderDAO.update(o);
+		System.out.println("waitRefund success");
+		return "%success";
+	}
 }
