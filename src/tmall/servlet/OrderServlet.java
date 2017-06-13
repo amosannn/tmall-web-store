@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tmall.bean.Order;
+import tmall.bean.Product;
 import tmall.dao.OrderDAO;
+import tmall.dao.ProductDAO;
 import tmall.util.Page;
 
 public class OrderServlet extends BaseBackServlet{
@@ -55,6 +57,22 @@ public class OrderServlet extends BaseBackServlet{
 		orderDAO.update(o);
 		
 		return "@admin_order_list";
+	}
+	
+	public String search(HttpServletRequest request, HttpServletResponse response, Page page){
+		String keyword = request.getParameter("keyword");
+		System.out.println(keyword+"  "+page.getStart());
+		List<Order> os = orderDAO.search(keyword, page.getStart(), page.getCount());
+		
+//		List<Order> os = orderDAO.list(page.getStart(), page.getCount());
+		orderItemDAO.fill(os);
+		int total = orderDAO.getSearchTotal(keyword);
+		System.out.println(total);
+		page.setTotal(total);
+		
+		request.setAttribute("os", os);
+		request.setAttribute("page", page);
+		return "admin/listOrder.jsp";
 	}
 	
 }

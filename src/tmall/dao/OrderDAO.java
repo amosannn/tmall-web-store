@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import tmall.bean.Order;
+import tmall.bean.Product;
 import tmall.bean.User;
 import tmall.util.DBUtil;
 import tmall.util.DateUtil;
@@ -37,6 +38,24 @@ public class OrderDAO {
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 total = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+ 
+            e.printStackTrace();
+        }
+        return total;
+    }
+    
+    public int getSearchTotal(String keyword) {
+        int total = 0;
+        
+        String sql = "select count(*) from order_ o,Product p,orderItem oi where o.id=oi.oid and oi.pid=p.id and p.name like %"+keyword+"%";
+        try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+        	
+//        	ps.setString(1, "%"+keyword.trim()+"%");
+            ResultSet rs = ps.executeQuery(sql);
+            if(rs.next()){
+            	total = rs.getInt(1);
             }
         } catch (SQLException e) {
  
@@ -294,5 +313,59 @@ public class OrderDAO {
  
     	return month+"月"+day+"日";
 	}
+    
+    public List<Order> search(String keyword, int start, int count){
+    	List<Order> beans = new ArrayList<Order>();
+    	if(null==keyword||0==keyword.trim().length())
+            return beans;
+    	
+    	//String sql = "select * from Order_ o,Product p where p.name like ? GROUP BY o.id order by o.id desc limit ?,? ";
+    	String sql="select * from Order_ o,Product p,orderItem oi where o.id=oi.oid and oi.pid=p.id and p.name like ? GROUP BY o.id order by o.id desc limit ?,?";
+    	try (Connection c = DBUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
+    		
+    		ps.setString(1, "%"+keyword.trim()+"%");
+    		ps.setInt(2, start);
+    		ps.setInt(3, count);
+    		
+    		ResultSet rs = ps.executeQuery();
+    		
+    		while (rs.next()) {
+    			Order bean = new Order();
+            	String orderCode =rs.getString("orderCode");
+                String address = rs.getString("address");
+                String post = rs.getString("post");
+                String receiver = rs.getString("receiver");
+                String mobile = rs.getString("mobile");
+                String userMessage = rs.getString("userMessage");
+                String status = rs.getString("status");
+                Date createDate = DateUtil.t2d( rs.getTimestamp("createDate"));
+                Date payDate = DateUtil.t2d( rs.getTimestamp("payDate"));
+                Date deliveryDate = DateUtil.t2d( rs.getTimestamp("deliveryDate"));
+                Date confirmDate = DateUtil.t2d( rs.getTimestamp("confirmDate"));
+                int uid =rs.getInt("uid");                
+                
+                int id = rs.getInt("id");
+                bean.setId(id);
+                bean.setOrderCode(orderCode);
+                bean.setAddress(address);
+                bean.setPost(post);
+                bean.setReceiver(receiver);
+                bean.setMobile(mobile);
+                bean.setUserMessage(userMessage);
+                bean.setCreateDate(createDate);
+                bean.setPayDate(payDate);
+                bean.setDeliveryDate(deliveryDate);
+                bean.setConfirmDate(confirmDate);
+                User user = new UserDAO().get(uid);
+                bean.setUser(user);
+                bean.setStatus(status);
+                beans.add(bean);
+    		}
+    	} catch (SQLException e) {
+    		
+    		e.printStackTrace();
+    	}
+    	return beans;
+    }
  
 }

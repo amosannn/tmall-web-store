@@ -6,6 +6,29 @@ div.workingArea{
 	margin:0px 40px;
 }
 
+select.orderSelect{
+	display:inline-block;
+	width: 150px;
+	margin: 3px auto;
+}
+
+div.orderSearchDiv{
+	display: inline-block;
+	width: 300px;
+	margin: 3px auto;
+	float: right;
+}
+
+input.orderSearchText{
+	display: inline-block;
+	width: 230px;
+}
+
+div.orderSearchSubmit{
+	display: inline-block;
+
+}
+
 div.addDiv{
 	width:400px;
 	margin:0px auto;

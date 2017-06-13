@@ -22,7 +22,27 @@ $(function(){
 	<h1 class="label label-info" >订单管理</h1>
 	<br>
 	<br>
-	
+
+	<div>
+		<form method="post" action="admin_order_search">
+			<!-- 筛选器
+			<select class="form-control orderSelect">
+				<option>全部订单</option>
+				<option>待发货订单</option>
+				<option>待退款订单</option>
+				<option>已退款订单</option>
+				<option>已删除订单</option>
+				<option>已完成订单</option>
+			</select> -->
+		
+			<div class="orderSearchDiv">
+				<input type="text"  name="keyword" placeholder="请输入商品名称" class="orderSearchText form-control">
+
+				<button type="submit" class="orderSearchSubmit btn btn-primary btn-sm">提交</button>
+			</div>
+		</form>
+	</div>
+
 	<div class="listDataTableDiv">
 		<table class="table table-striped table-bordered table-hover1  table-condensed">
 			<thead>
